@@ -45,7 +45,7 @@ export default class TeamView extends React.Component {
       return usersSoFar
      },{});
 
-    //Convert object to array of user objects & related sessions
+    //Convert users object to array of user objects & their related sessions
     let userSessions = [];
     for (let user of users) {
       userSessions.push({
