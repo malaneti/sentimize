@@ -9,13 +9,13 @@ export default class TeamView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sessionEntries: []
+      userSessions: {}
     }
   }
 
   componentDidMount() {
     this._getSessions(function(data) {
-      this.setState({ sessionEntries: data });
+      this.setState({ userSessions: _sessionsByUser(data) });
     }.bind(this));
   }
 
@@ -33,12 +33,21 @@ export default class TeamView extends React.Component {
     });
   }
 
+  _sessionsByUser(sessions) {
+    let users = sessions.reduce(function(usersSoFar, session) {
+      usersSoFar[session.userId] = usersSoFar[session.userId].push(session) || [session];
+      return usersSoFar
+     },{});
+
+    return users;
+  }
+
   render() {
     return (
       <div className="view team-view">
         <h4 className="team-view-title">Team Dashboard</h4>
         <div className="pure-g">
-          {this.state.sessionEntries.map(
+          {this.state.sessionBuckets.map(
             entry => (
               <div className="pure-u-1-3">
                 <TeamMember entry={entry} sessionId={entry.id} />
