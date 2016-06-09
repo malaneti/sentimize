@@ -26,7 +26,7 @@ exports.getCurrentUser = function(req, res) {
   User.where({ id: req.user.id }).fetch()
     .then(function(currentUser) {
       // Null out password before sending information
-      currentUser.password = null;
+    
       res.status(200).send(currentUser);
     })
     .catch(function(err) {

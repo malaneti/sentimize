@@ -1,29 +1,36 @@
 var Team = require('./../models/TeamModel.js');
 var Promise = require('bluebird');
 
-exports.createTeam = function(req, res) {
+exports.findOrCreateTeam = function(teamName) {
+  //pass in team name 
   var teamObj = {
-    name: req.body.name,
+    name: teamName,
   };
 
-  Team.where('name', teamObj.name).fetch().then(function(team) {
-    if(!team) {
-      return new Team(teamObj).save();
-    }
-  }).then(function(newTeam) {
-    res.status(302).redirect('/login');
-  })
-  .catch(function(err) {
-    console.log(err);
-  })
+  Team.where('name', teamObj.name).fetch()
+    .then(function(team) {
+      if(!team) {
+        new Team(teamObj).save()
+          .then(function(newTeam) {
+            return newTeam.id;
+          })
+      }
+      return team.id;
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 };
 
-exports.getCurrentTeam = function(req, res) {
-  User.where({ id: req.team.id }).fetch()
+exports.getCurrentTeam = function(teamName) {
+    
+  var teamObj = {
+    name: teamName,
+  };
+
+  Team.where('name', teamObj.name).fetch()
     .then(function(currentTeam) {
-      // Null out password before sending information
-      currentTeam.password = null;
-      res.status(200).send(currentUser);
+      return currentTeam.id
     })
     .catch(function(err) {
       console.error(err);

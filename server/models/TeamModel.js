@@ -4,7 +4,7 @@ var User = require('./UserModel.js')
 
 db.knex.schema.hasTable('team').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('team', function (team) {
+    db.knex.schema.createTable('team', function(team) {
      team.increments('id').primary();
      team.string('name', 255).unique();
     }).then(function (table) {

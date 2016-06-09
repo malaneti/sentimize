@@ -26,7 +26,7 @@ module.exports = {
 
   getSessions: function(req, res) {
     var queryObj = {
-      userId: req.user.Id
+      userId: req.user.id
     }
 
     Session.where(queryObj).fetchAll()
