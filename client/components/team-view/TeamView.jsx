@@ -33,9 +33,13 @@ export default class TeamView extends React.Component {
     });
   }
 
-  showSessionReport() {
+  showSessionReport(e) {
     console.log('showSessionReport function needs updating for correct REACT ROUTER PATH');
-    // browserHistory.push('/reports/' + this.props.sessionId.toString());
+    browserHistory.push('/reports/' + e.currentTarget.sessionId.toString());
+  }
+
+  showUserSessions(e) {
+    browserHistory.push('/session/' + e.currentTarget.userName)
   }
 
   _sessionsByUser(sessions) {

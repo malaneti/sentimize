@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 // import dummyData from './../../../data/session-data.json';
 
-export default SessionsView = props => (
+const SessionsView = props => (
   <div className="view sessions-view">
     <h4 className="sessions-view-title">My Sessions</h4>
     <div className="pure-g">
@@ -21,3 +21,5 @@ export default SessionsView = props => (
     </div>
   </div>
 );
+
+export default SessionsView;
