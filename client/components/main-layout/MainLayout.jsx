@@ -4,8 +4,28 @@ import NavBar from './NavBar.jsx';
 import Footer from './Footer.jsx';
 
 export default class MainLayout extends React.Component {
+
   constructor (props) {
     super(props);
+    this.state = {
+      sessionId: null,
+      intervalId: null,
+      showQuestions: false,
+      startTime: undefined
+    };
+
+  setRecordState (stateProp, stateVal) {
+    if ( stateProp === 'sessionId' ) {
+      this.setState({sessionId: stateVal});
+    } else if ( stateProp === 'intervalId' ) {
+      this.setState({intervalId: stateVal});
+    } else if ( stateProp === 'showQuestions' ) {
+      this.setState({showQuestions: stateVal});
+    } else if ( stateProp === 'startTime' ) {
+      this.setState({startTime: stateVal});
+    }
+  }
+
   }
 
   render () {
@@ -16,7 +36,13 @@ export default class MainLayout extends React.Component {
           <img id='current-snapshot' src=''/>
         </div>
         <NavBar />
-        {this.props.children}
+        {React.cloneElement(this.props.children, {
+          sessionId: this.state.sessionId,
+          intervalId: this.state.intervalId,
+          showQuestions: this.state.showQuestions,
+          startTime: this.state.startTime,
+          setRecordState: this.setRecordState.bind(this)
+        })}
         <Footer />
       </div>
     );
