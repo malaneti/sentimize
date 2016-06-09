@@ -53,8 +53,17 @@ module.exports = {
   },
 
   getSnapshots: function(req, res) {
-    var queryObj = {
-      userId: req.param('userId')
+    var queryObj;
+
+    //snapshots for a specific user or for a specific session
+    if (req.query.userId) {
+      queryObj = {
+        userId: req.query.userId
+      }
+    } else if (req.param('sessionId')) {
+      queryObj = {
+        sessionId: req.param('sessionId')
+      }
     }
 
     Snapshot.where(queryObj).fetchAll()
