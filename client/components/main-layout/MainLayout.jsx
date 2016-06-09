@@ -13,6 +13,7 @@ export default class MainLayout extends React.Component {
       showQuestions: false,
       startTime: undefined
     };
+  }
 
   setRecordState (stateProp, stateVal) {
     if ( stateProp === 'sessionId' ) {
@@ -24,8 +25,6 @@ export default class MainLayout extends React.Component {
     } else if ( stateProp === 'startTime' ) {
       this.setState({startTime: stateVal});
     }
-  }
-
   }
 
   render () {

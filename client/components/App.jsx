@@ -10,11 +10,11 @@ import ReportView from './report-view/ReportView.jsx';
 import SettingsView from './settings-view/SettingsView.jsx';
 
 export default class App extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  render() {
+  render () {
     return (
       <Router history={browserHistory}>
         <Route path="/" component={MainLayout}>
@@ -25,6 +25,6 @@ export default class App extends React.Component {
           <Route path="settings" component={SettingsView} />
         </Route>
       </Router>
-    )
+    );
   }
 }
