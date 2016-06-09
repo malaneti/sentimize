@@ -35,7 +35,7 @@ export default class SessionsView extends React.Component {
   }
 
   showSessionReport(sessionId) {
-    browserHistory.push('/session/' + sessionId.toString());
+    browserHistory.push('/reports/' + sessionId.toString());
   }
 
   render() {

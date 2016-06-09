@@ -53,21 +53,24 @@ module.exports = {
   },
 
   getSnapshots: function(req, res) {
-    var queryObj;
+    var queryField;
+    var queryValues;
 
-    //snapshots for a specific user or for a specific session
-    if (req.query.userId) {
-      queryObj = {
-        userId: req.query.userId
-      }
+    if (req.param('userId')) {
+      queryField = 'userId'; //all snapshots for specific user (TeamView component)
     } else if (req.param('sessionId')) {
-      queryObj = {
-        sessionId: req.param('sessionId')
-      }
+      queryField = 'sessionId';  //all snapshots for specific session (ReportView component)
     }
 
-    Snapshot.where(queryObj).fetchAll()
+    queryValues = req.param(queryField).map(function(value){
+      return parseInt(value) || value;
+    });
+
+    Snapshot.query(function(qb) {
+        qb.whereIn(queryField, queryValues);
+      }).fetchAll()
       .then(function(snapshots) {
+        console.log(snapshots);
         res.status(200).send(snapshots);
       })
       .catch(function(err) {

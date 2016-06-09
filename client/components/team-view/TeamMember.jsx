@@ -14,7 +14,7 @@ export default class TeamMember extends React.Component {
 
   }
 
-  _collateData(snapshots) {
+  _getAvgSnapshot(snapshots) {
     //This function needs:
     // - Aggregate expressions data across all sessions for a user & calc an average
     // - Aggregate expressions data across all sessions for a user & calc an average OR show latest mood data?
@@ -49,12 +49,7 @@ export default class TeamMember extends React.Component {
         }
       }
     });
-
-    // let dimensionDivs;
-    // for (let key in dimensions) {
-    //  dimensionDivs = dimensionsDivs + 
-    // }
-
+    // TODO: Need to return a JSX component
     return dimensions;
   }
 

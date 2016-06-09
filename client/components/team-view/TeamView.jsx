@@ -15,11 +15,12 @@ export default class TeamView extends React.Component {
 
   componentDidMount() {
     this._getSnapshots(function(data) {
-      this.setState({ userSnapshots: _snapshotsByUser(data) });
+      this.setState({ userSnapshots: this._snapshotsByUser(data) });
     }.bind(this));
   }
 
   _getSnapshots(callback) {
+    let queryString = '?userId=1,2'
     $.ajax({
       method: 'GET',
       url: '/api/snapshot',
@@ -39,6 +40,7 @@ export default class TeamView extends React.Component {
   }
 
   _snapshotsByUser(snapshots) {
+    console.log('SNAPSHOTS: ', snapshots);
     //Build an object with user snapshots in an array by user
     let users = snapshots.reduce(function(usersSoFar, snapshot) {
       usersSoFar[snapshot.userId] = usersSoFar[snapshot.userId].push(snapshot) || [snapshot];
@@ -47,10 +49,10 @@ export default class TeamView extends React.Component {
 
     //Convert users object to array of user objects & their related sessions
     let userSnapshots = [];
-    for (let user of users) {
+    for (let userId of users) {
       userSnapshots.push({
-        user: user,
-        snapshots: users[user]
+        userId: userId,
+        snapshots: users[userId]
       })
     }
     return userSnapshots;
