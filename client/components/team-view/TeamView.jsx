@@ -9,6 +9,7 @@ export default class TeamView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: user,
       userSessions: []
     }
   }
@@ -33,13 +34,8 @@ export default class TeamView extends React.Component {
     });
   }
 
-  showSessionReport(e) {
-    console.log('showSessionReport function needs updating for correct REACT ROUTER PATH');
-    browserHistory.push('/reports/' + e.currentTarget.sessionId.toString());
-  }
-
-  showUserSessions(e) {
-    browserHistory.push('/session/' + e.currentTarget.userName)
+  showUserSessions(userId) {
+    browserHistory.push('/session/' + userId.toString());
   }
 
   _sessionsByUser(sessions) {
@@ -69,9 +65,9 @@ export default class TeamView extends React.Component {
             user => (
               <div className="pure-u-1-3">
                 <TeamMember userName={user.sessions[0].firstName + ' ' + user.sessions[0].lastName} 
-                            userId={user.user} 
+                            userId={user.userId} 
                             sessions={user.sessions} 
-                            onClick={this.showSessionReport.bind(this)}/>
+                            onClick={this.showUserSessions.bind(this)}/>
               </div>
             )
           )}
