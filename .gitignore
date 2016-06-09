@@ -24,6 +24,7 @@ env/client-config.js
 env/development.env
 env/production.env
 env/client-config.js
+env/github_oauth.js
 
 # VIM
 *.swp
