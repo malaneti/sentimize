@@ -25,7 +25,9 @@ const options = {
 const styles = {
   graphContainer: {
     border: '1px solid black',
-    padding: '15px'
+    padding: '10px',
+    margin: '15px',
+    display: 'inline-block'
   }
 }
 
@@ -112,23 +114,23 @@ export default class ChartComponent extends React.Component {
     })
   };
 
-  render() {
+  render () {
     return (
       <div>
         <div style={styles.graphContainer}>
-          <h3>Mood Chart</h3>
-          <LineChart data={this.state.mood}
-            redraw options={options}
-            width="600" height="250"/>
-        </div>
-        <div style={styles.graphContainer}>
           <h3>Expressions Chart</h3>
           <RadarChart data={this.state.expressions}
-            redraw options={options}
-            width="600" height="250"/>
+                      redraw options={options}
+                      width="50" height="60"/>
+        </div>
+        <div style={styles.graphContainer}>
+          <h3>Mood Chart</h3>
+          <LineChart data={this.state.mood}
+                     redraw options={options}
+                     width="700" height="60"/>
         </div>
       </div>
-    )
+    );
   }
 }
 
