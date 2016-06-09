@@ -21,6 +21,18 @@ module.exports = {
       fear: data.expressions.fear.value,
       happiness: data.expressions.happiness.value,
       disgust: data.expressions.disgust.value,
+      neutral: data.expressions.neutral.value,
+      yaw: data.head.yaw.value,
+      roll: data.head.roll.value,
+      pitch: data.head.pitch.value,
+      'eyeRight-y': data.landmarks.eyeRight.y,
+      'eyeRight-x': data.landmarks.eyeRight.x,
+      'eyeLeft-y': data.landmarks.eyeLeft.y,
+      'eyeLeft-x': data.landmarks.eyeLeft.x,
+      'face-y': data.face.y,
+      'face-x': data.face.x,
+      'face-w': data.face.w,
+      'face-h': data.face.h,
       userId: req.user.id, 
       sessionId: req.body.sessionId 
     }

@@ -18,6 +18,18 @@ db.knex.schema.hasTable('snapshots').then(function(exists){
       snapshot.integer('fear');
       snapshot.integer('happiness');
       snapshot.integer('disgust');
+      snapshot.integer('neutral');
+      snapshot.float('yaw');
+      snapshot.float('roll');
+      snapshot.float('pitch');
+      snapshot.integer('eyeRight-y');
+      snapshot.integer('eyeRight-x');
+      snapshot.integer('eyeLeft-y');
+      snapshot.integer('eyeLeft-x');
+      snapshot.integer('face-y');
+      snapshot.integer('face-x');
+      snapshot.integer('face-w');
+      snapshot.integer('face-h');
       snapshot.integer('userId');
       snapshot.integer('sessionId');
       snapshot.timestamps();
