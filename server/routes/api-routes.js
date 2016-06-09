@@ -10,6 +10,7 @@ module.exports = function(app) {
   app.post('/api/session', SessionController.createSession);
   app.post('/api/session/update', SessionController.updateSession);
 
-  app.get('/api/snapshot', SnapshotController.getSnapshots);
+  app.get('/api/snapshot/session', SnapshotController.getSnapshotsSession);
+  app.get('/api/snapshot/user', SnapshotController.getSnapshotsUser);
   app.post('/api/snapshot', SnapshotController.createSnapshot);
 };

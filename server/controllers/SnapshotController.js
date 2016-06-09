@@ -54,7 +54,7 @@ module.exports = {
 
   getSnapshots: function(req, res) {
     var queryObj = {
-      sessionId: req.param('sessionId')
+      userId: req.param('userId')
     }
 
     Snapshot.where(queryObj).fetchAll()

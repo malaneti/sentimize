@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { browserHistory } from 'react-router';
 
-export default Class TeamMember extends React.Component {
+export default class TeamMember extends React.Component {
   constructor(props) {
     super(props);
   }

@@ -23,14 +23,14 @@ export default class SessionsView extends React.Component {
     $.ajax({
       method: 'GET',
       url: '/api/session',
-      data: { userId: this.props.params.userId }
+      dataType: 'json',
+      data: { userId: this.props.params.userId },
       success: function(data) {
         callback(data);
       },
       error: function(error) {
         console.error('_getSessions Error:', error);
-      },
-      dataType: 'json'
+      }
     });
   }
 
