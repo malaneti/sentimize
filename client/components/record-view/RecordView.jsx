@@ -9,21 +9,17 @@ import RecordInstructions from './record-instructions.jsx';
 import RecordQuestions from './record-questions.jsx';
 
 export default class RecordView extends React.Component {
-  constructor(props) {
+
+  constructor (props) {
     super(props);
-    this.state = {
-      sessionId: null,
-      intervalId: null,
-      showQuestions: false,
-      startTime: undefined
-    }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     FACE.webcam.startPlaying('webcam');
+    FACE.webcam.startPlaying('recordcam');
   }
 
-  _createNewSession(e) {
+  _createNewSession (e) {
     var formData = {
      title: $('.record-title')[0].value,
      subject: $('.record-subject')[0].value,
@@ -49,25 +45,24 @@ export default class RecordView extends React.Component {
       dataType: 'json'
     });
   }
-  _loadprompt() {
 
+  _loadprompt () {
     $('.record-instructions').remove()
     this.setState({showQuestions: true})
-
-
   }
-  _startRecording() {
+
+  _startRecording () {
     var intervalId = setInterval(function() {
-      FACE.webcam.takePicture('webcam', 'current-snapshot');
+      FACE.webcam.takePicture('recordcam', 'current-snapshot');
       this._takeSnapshot();
     }.bind(this), 1000);
 
     this.setState({ intervalId: intervalId, startTime: Date.now() });
   }
 
-  _takeSnapshot() {
+  _takeSnapshot () {
     var snapshot = document.querySelector('#current-snapshot');
-    if( snapshot.naturalWidth == 0 ||  snapshot.naturalHeight == 0 ) return;
+    if( snapshot.naturalWidth == 0 || snapshot.naturalHeight == 0 ) return;
 
     // Process snapshot and make API call
     var snapshotBlob = FACE.util.dataURItoBlob(snapshot.src);
@@ -86,7 +81,7 @@ export default class RecordView extends React.Component {
     );
   }
 
-  _createNewSnapshot(snapshotData) {
+  _createNewSnapshot (snapshotData) {
     let sessionId = this.state.sessionId;
 
     $.ajax({
@@ -106,14 +101,14 @@ export default class RecordView extends React.Component {
     });
   }
 
-  _endSession() {
+  _endSession () {
     console.log('Session ended.');
     clearInterval(this.state.intervalId);
     this._calcDuration()
 
     // Wait 2 seconds after stop button is pressed
     setTimeout(function() {
-      FACE.webcam.stopPlaying('webcam');
+      FACE.webcam.stopPlaying('recordcam');
       browserHistory.push('/reports/' + this.state.sessionId.toString());
     }.bind(this), 1000)
   }
@@ -146,21 +141,18 @@ export default class RecordView extends React.Component {
 
   }
 
-  render() {
+  render () {
     return (
       <div className="pure-g record-container">
         <div className="pure-u-2-3 record-box">
           <video id='webcam' className="pure-u-1-1 record-webcam" autoplay></video>
-          <img id='current-snapshot' src=''/>
-
         </div>
         <div className="pure-u-1-3 record-form">
           <RecordInstructions clicked={this._createNewSession.bind(this)}/>
           { this.state.showQuestions ? <RecordQuestions clicked={this._endSession.bind(this)}/> : null }
         </div>
-
       </div>
-    )
+    );
   }
 }
 
