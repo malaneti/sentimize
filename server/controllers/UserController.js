@@ -57,9 +57,13 @@ exports.getUser = function(req, res) {
 exports.getUsersTeam = function(req, res) {
   User.where({ teamid: parseInt(req.user.attributes.teamid) }).fetchAll()
     .then(function(teamUsers) {
-      res.send(teamUsers);
+      var team = teamUsers.models.map(function(user) {
+        return user.id;
+      })
+
+      res.send(team);
     })
     .catch(function(err) {
-      console.error('Error fetching user: ', err);
+      console.error('Error fetching team: ', err);
     });
 };

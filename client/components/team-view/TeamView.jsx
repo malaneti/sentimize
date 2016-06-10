@@ -9,19 +9,40 @@ export default class TeamView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      userId: null,
+      teamId: null,
+      userIds: [],
       userSnapshots: []
     }
   }
 
   componentDidMount() {
-    this._getTeamUsers(function(data) {
-      this.setState({ users: data.users });
-      console.log(this.state.users);
-      this._getSnapshots(function(data) {
-        this.setState({ userSnapshots: this._snapshotsByUser(data) });
+    this._getCurrentUser(function(currentUser) {
+      this.setState({
+        userId: currentUser.id,
+        teamId: parseInt(currentUser.teamid)
+      });  
+      this._getTeamUsers(function(userIds) {
+        this.setState({ userIds: userIds });
+        this._getSnapshots(function(snapshots) {
+          this.setState({ userSnapshots: this._snapshotsByUser(snapshots) });
+        }.bind(this));
+      }.bind(this));
+    }.bind(this));
+  }
+
+  _getCurrentUser(callback) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/users',
+      dataType: 'json',
+      success: function(data) {
+        callback(data);
+      },
+      error: function(err) {
+        console.error('_getCurrentUser error', err);
       }
-    )}.bind(this));
+    });
   }
 
   _getTeamUsers(callback) {
@@ -44,7 +65,7 @@ export default class TeamView extends React.Component {
       method: 'GET',
       url: '/api/snapshot',
       dataType: 'json',
-      data: { teamId: this.state.teamId },
+      data: { userIds: this.state.userIds },
       success: function(data) {
         callback(data);
       },

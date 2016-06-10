@@ -57,7 +57,8 @@ module.exports = {
     var queryValues;
 
     //All snapshots for all sessions for a specific user (TeamView component)
-    if (req.param('userId')) {
+    console.log(req.query);
+    if (req.param('userIds')) {
       queryField = 'userId'; 
     } else if (req.param('sessionId')) {
       //Snapshots for a specific session (ReportView component)

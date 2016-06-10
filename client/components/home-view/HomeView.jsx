@@ -26,7 +26,6 @@ export default class HomeView extends React.Component {
       method: 'GET',
       url: '/api/users',
       success: function(data) {
-        console.log(data);
         callback(data);
       },
       error: function(err) {
