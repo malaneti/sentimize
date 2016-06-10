@@ -9,23 +9,42 @@ export default class TeamView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      users: [],
       userSnapshots: []
     }
   }
 
   componentDidMount() {
-    this._getSnapshots(function(data) {
-      this.setState({ userSnapshots: this._snapshotsByUser(data) });
-    }.bind(this));
+    this._getTeamUsers(function(data) {
+      this.setState({ users: data.users });
+      console.log(this.state.users);
+      this._getSnapshots(function(data) {
+        this.setState({ userSnapshots: this._snapshotsByUser(data) });
+      }
+    )}.bind(this));
+  }
+
+  _getTeamUsers(callback) {
+    $.ajax({
+      method: 'GET',
+      url: '/api/users/team',
+      dataType: 'json',
+      data: { teamid: this.state.teamId },
+      success: function(data) {
+        callback(data);
+      },
+      error: function(error) {
+        console.error('_getSnapshots Error:', error);
+      }
+    });
   }
 
   _getSnapshots(callback) {
-    let queryString = '?userId=1,2'
     $.ajax({
       method: 'GET',
       url: '/api/snapshot',
       dataType: 'json',
-      data: { userId: [1, 2] },
+      data: { teamId: this.state.teamId },
       success: function(data) {
         callback(data);
       },

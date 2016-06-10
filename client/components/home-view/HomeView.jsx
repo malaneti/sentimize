@@ -5,10 +5,18 @@ import $ from 'jquery';
 export default class HomeView extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      userId: null,
+      teamId: null
+    }
   }
 
   componentWillMount() {
     this._getCurrentUser(function(currentUser) {
+        this.setState({
+          userId: currentUser.id,
+          teamId: currentUser.teamid
+        });      
       $(this.refs.firstName).text(currentUser.firstName);
     }.bind(this));
   }
@@ -18,7 +26,7 @@ export default class HomeView extends React.Component {
       method: 'GET',
       url: '/api/users',
       success: function(data) {
-        // console.log(data);
+        console.log(data);
         callback(data);
       },
       error: function(err) {

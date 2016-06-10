@@ -53,3 +53,13 @@ exports.getUser = function(req, res) {
       console.error('Error fetching user: ', err);
     });
 };
+
+exports.getUsersTeam = function(req, res) {
+  User.where({ teamid: parseInt(req.user.attributes.teamid) }).fetchAll()
+    .then(function(teamUsers) {
+      res.send(teamUsers);
+    })
+    .catch(function(err) {
+      console.error('Error fetching user: ', err);
+    });
+};
