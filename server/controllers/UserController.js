@@ -1,9 +1,9 @@
 var User = require('./../models/UserModel');
-var Team = require('./../models/TeamModel');
+var TeamController = require('./../controller/TeamController');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
-exports.createUser = function(profile, orgName) {
+exports.findOrCreateUser = function(profile, orgName) {
   var name = profile.displayName.split(' ');
   var userObj = {
     email: profile.emails[0],
@@ -14,35 +14,28 @@ exports.createUser = function(profile, orgName) {
 
   User.where('username', userObj.username).fetch().then(function(user) {
     if(!user) {
-      
-      return new User(userObj).save();
-
-
-        
-            // new User(userObj).save()
-            //   .then(function(newUser) {
-            //     user = newUser;
-            //     console.log('New User: ', user);
-            //   });
+      var teamId = TeamController.findOrCreateTeam(orgName);
+      userObj.teamid = teamId;
+      new User(userObj).save()
+        .then(function(newUser) {
+          return newUser;
+        });
     }
-  }).then(function(newUser) {
-    res.status(302).redirect('/login');
+    return user;
   })
   .catch(function(err) {
     console.log(err);
-  })
+  });
 };
 
-exports.getCurrentUser = function(req, res) {
-  User.where({ id: req.user.id }).fetch()
+exports.getCurrentUser = function(userid) {
+  User.where({ id: userid }).fetch()
     .then(function(currentUser) {
-      // Null out password before sending information
-      currentUser.password = null;
-      res.status(200).send(currentUser);
+      return currentUser;
     })
     .catch(function(err) {
       console.error(err);
-    })
+    });
 };
 
 exports.updateUser = function(req, res) {

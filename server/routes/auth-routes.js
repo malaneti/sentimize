@@ -21,18 +21,6 @@ module.exports = function(app, passport) {
     function(req, res) {
       res.redirect('/');
     });
-  // app.post('/login',
-  // passport.authenticate('local', {
-  //   successRedirect: '/',
-  //   failureRedirect: '/login'
-  // }));
-
-  // app.get('/signup',
-  // function(req, res) {
-  //   res.render('signup');
-  // });
-
-  //app.post('/api/users', UserController.createUser);
 
   app.get('/logout',
   function(req, res) {
