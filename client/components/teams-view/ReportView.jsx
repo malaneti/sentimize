@@ -22,21 +22,10 @@ const options = {
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
 }
 
-/*
-const styles = {
-  graphContainer: {
-    border: '1px solid black',
-    padding: '10px',
-    margin: '15px',
-    display: 'inline-block'
-  }
-}
-*/
-
 export default class ChartComponent extends React.Component {
 
-  constructor(props) {
-    super(props)
+  constructor (props) {
+    super(props);
     this.state = {
       expressions: {
         labels: ['Sadness', 'Disgust', 'Anger', 'Surprise', 'Fear', 'Happiness'],
@@ -124,7 +113,7 @@ export default class ChartComponent extends React.Component {
                       redraw options={options}
                       width="50" height="60"/>
         </div>
-        <div className="pure-u-3-4">
+        <div className="pure-u-3-5">
           <h3>Mood Chart</h3>
           <LineChart data={this.state.mood}
                      redraw options={options}
