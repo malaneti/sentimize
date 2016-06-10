@@ -1,5 +1,5 @@
-var SessionController = require('./../controllers/SessionController.js');
-var SnapshotController = require('./../controllers/SnapshotController.js');
+var SessionController = require('./../controllers/SessionController');
+var SnapshotController = require('./../controllers/SnapshotController');
 
 module.exports = function(app) {
   // See auth-routes for POST to /api/users

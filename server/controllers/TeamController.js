@@ -1,4 +1,4 @@
-var Team = require('./../models/TeamModel.js');
+var Team = require('./../models/TeamModel');
 var Promise = require('bluebird');
 
 exports.findOrCreateTeam = function(teamName, callback) {

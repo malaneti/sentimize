@@ -1,7 +1,7 @@
 var db = require('../config/db');
-var Snapshot = require('./SnapshotModel.js');
-var Session = require('./SessionModel.js');
-var Team = require('./TeamModel.js')
+var Snapshot = require('./SnapshotModel');
+var Session = require('./SessionModel');
+var Team = require('./TeamModel')
 var Promise = require('bluebird');
 
 db.knex.schema.hasTable('users').then(function(exists) {
@@ -30,26 +30,7 @@ var User = db.Model.extend({
   },
   sessions: function() {
     return this.hasMany(Session);
-  },
-
-  initialize: function() {
-    this.on('creating', this.hashPassword);
-  },
-
-  comparePassword: function(attemptedPassword, callback) {
-    bcrypt.compare(attemptedPassword, this.get('password'), function(err, isMatch) {
-      callback(isMatch);
-    });
-  },
-
-  hashPassword: function() {
-    var cipher = Promise.promisify(bcrypt.hash);
-    return cipher(this.get('password'), null, null).bind(this)
-      .then(function(hash) {
-        this.set('password', hash);
-      });
   }
-
 });
 
 module.exports = User;

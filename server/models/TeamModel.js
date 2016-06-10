@@ -1,5 +1,5 @@
 var db = require('../config/db');
-var User = require('./UserModel.js');
+var User = require('./UserModel');
 var Promise = require('bluebird');
 
 db.knex.schema.hasTable('teams').then(function(exists) {
