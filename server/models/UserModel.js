@@ -1,7 +1,7 @@
 var db = require('../config/db');
 var Snapshot = require('./SnapshotModel.js');
 var Session = require('./SessionModel.js');
-var bcrypt = require('bcrypt-nodejs');
+var Team = require('./TeamModel.js')
 var Promise = require('bluebird');
 
 db.knex.schema.hasTable('users').then(function(exists) {

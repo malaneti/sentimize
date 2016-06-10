@@ -34,11 +34,11 @@ module.exports = function(app, express, passport) {
         info.forEach(function(org) {
           var orgName = org.login;
           if (orgName === 'hackreactor') {
-            var user = User.findOrCreateUser(profile, orgName);
-            return done(null, user);
+            User.findOrCreateUser(profile, orgName, function(user) {
+              return done(null, user);
+            });
           }
         });
-        // TODO add validation for error/failure
       }
     }
 
@@ -51,8 +51,9 @@ module.exports = function(app, express, passport) {
   });
 
   passport.deserializeUser(function(id, done) {
-    var user = User.getCurrentUser(id);
-    done(null, user);
+    User.getCurrentUser(id, function(user) {
+      done(null, user);
+    });
   });
 
 };
