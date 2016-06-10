@@ -1,4 +1,4 @@
-var Snapshot = require('../models/SnapshotModel.js');
+var Snapshot = require('../models/SnapshotModel');
 
 module.exports = {
   createSnapshot: function(req, res) {

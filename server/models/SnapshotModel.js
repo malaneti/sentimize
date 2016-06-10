@@ -1,6 +1,6 @@
-var db = require('../config/db.js');
-var User = require('./UserModel.js');
-var Session = require('./SessionModel.js');
+var db = require('../config/db');
+var User = require('./UserModel');
+var Session = require('./SessionModel');
 
 db.knex.schema.hasTable('snapshots').then(function(exists){
   if(!exists) {

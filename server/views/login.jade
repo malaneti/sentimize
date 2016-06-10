@@ -6,7 +6,7 @@ block styles
 block content
   div.login-container
     h1.title Sentimize
-    div.login-form
+    //div.login-form
       form(method='POST', action='/login')
         div.login-form-input.username
           input(type='email', name='email', placeholder="Email" required)
@@ -14,5 +14,8 @@ block content
           input(type='password', name='password', placeholder="Password" required)
         button.login-button Log in
 
+    form(method='GET', action='/auth/github')
+      button.login-button Log with GitHub
+  //
     div.signup-link-container
       a.signup-link(href='/signup') Sign up

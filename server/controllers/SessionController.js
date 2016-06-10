@@ -1,4 +1,4 @@
-var Session = require('../models/SessionModel.js');
+var Session = require('../models/SessionModel');
 var moment = require('moment');
 
 module.exports = {

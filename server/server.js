@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
 
 var express = require('express');
 var passport = require('passport');
-var util = require('./lib/utility.js');
+var util = require('./lib/utility');
 
 var app = express();
 

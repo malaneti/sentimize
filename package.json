@@ -35,12 +35,14 @@
     "mysql": "^2.10.2",
     "numeral": "^1.5.3",
     "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
     "passport-local": "^1.0.0",
     "react": "^15.1.0",
     "react-chartjs": "^0.7.3",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
-    "react-webcam": "0.0.12"
+    "react-webcam": "0.0.12",
+    "request": "^2.72.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

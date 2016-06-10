@@ -52,7 +52,7 @@ export default class RecordView extends React.Component {
     var intervalId = setInterval (function () {
       FACE.webcam.takePicture('recordcam', 'current-snapshot');
       this._takeSnapshot();
-    }.bind(this), 1000);
+    }.bind(this), 5000);
 
     this.props.setRecordState('intervalId', intervalId);
     this.props.setRecordState('startTime', Date.now());
