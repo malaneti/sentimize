@@ -14,7 +14,6 @@ export default class SessionsView extends React.Component {
   }
 
   componentDidMount() {
-    let userId = this.props.params.userId;
     this._getSessions(function(data) {
       this.setState({ sessionEntries: data });
     }.bind(this));
@@ -35,8 +34,9 @@ export default class SessionsView extends React.Component {
     });
   }
 
-  showSessionReport() {
-    browserHistory.push('/reports/' + sessionId.toString());
+  showSessionReport(e) {
+    console.log(e.currentTarget);
+    browserHistory.push('/reports/' + this.props.sessionId.toString());
   }
 
   render() {
@@ -48,8 +48,7 @@ export default class SessionsView extends React.Component {
             session => (
               <div className="pure-u-1-3">
                 <SessionEntry session={session} 
-                              sessionId={session.id}
-                              onClick={this.showSessionReport.bind(this)} />
+                              sessionId={session.id} />
               </div>
             )
           )}

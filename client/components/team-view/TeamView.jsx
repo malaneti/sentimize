@@ -64,7 +64,7 @@ export default class TeamView extends React.Component {
           {this.state.userSnapshots.map(
             user => (
               <div className="pure-u-1-3">
-                <TeamMember user={user} />
+                <TeamMember userId={user.userId} snapshots={user.snapshots} />
               </div>
             )
           )}

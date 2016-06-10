@@ -70,7 +70,6 @@ module.exports = {
         qb.whereIn(queryField, queryValues);
       }).fetchAll()
       .then(function(snapshots) {
-        console.log(snapshots);
         res.status(200).send(snapshots);
       })
       .catch(function(err) {

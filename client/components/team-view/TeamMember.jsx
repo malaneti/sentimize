@@ -8,11 +8,11 @@ export default class TeamMember extends React.Component {
 
 
   componentWillMount() {
-    let userId = this.props.params.userId;
+ 
   }
 
   showUserSessions() {
-    browserHistory.push('/session/' + userId.toString());
+    browserHistory.push('/session/' + this.props.userId.toString());
   }
 
   // _getAvgSnapshot(snapshots) {
@@ -56,8 +56,8 @@ export default class TeamMember extends React.Component {
 
   render() {
     return (
-      <div className="team-member-row" userId={this.props.user.userId} onClick={this.showUserSessions.bind(this)}>
-        <div className="team-member-userName">{this.props.user.userId}</div>
+      <div className="team-member-row" id={this.props.userId} onClick={this.showUserSessions.bind(this)}>
+        <div className="team-member-userName">{this.props.userId}</div>
         {/*<div className="team-member-description">{props.entry.description}</div>
         <div className="team-member-subject">
           <span className="label">Subject: </span>
