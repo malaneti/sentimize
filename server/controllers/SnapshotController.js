@@ -66,6 +66,9 @@ module.exports = {
       return parseInt(value) || value;
     });
 
+    console.log("QUERY FIELD: ", queryField);
+    console.log("QUERY VALUES: ", queryValues);
+
     Snapshot.query(function(qb) {
         qb.whereIn(queryField, queryValues);
       }).fetchAll()
