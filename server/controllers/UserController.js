@@ -43,3 +43,13 @@ exports.getCurrentUser = function(userid, callback) {
       console.error('Error fetching user: ', err);
     });
 };
+
+exports.getUser = function(req, res) {
+  User.where({ id: req.user.id }).fetch()
+    .then(function(currentUser) {
+      res.send(currentUser);
+    })
+    .catch(function(err) {
+      console.error('Error fetching user: ', err);
+    });
+};
