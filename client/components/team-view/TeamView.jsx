@@ -35,11 +35,6 @@ export default class TeamView extends React.Component {
     });
   }
 
-  showUserSessions(e) {
-    console.log("CLICKED: ", e.currentTarget);
-    browserHistory.push('/session/' + userId.toString());
-  }
-
   _snapshotsByUser(snapshots) {
     //Build an object with user snapshots in an array by user
     let users = snapshots.reduce(function(usersSoFar, snapshot) {
@@ -69,9 +64,7 @@ export default class TeamView extends React.Component {
           {this.state.userSnapshots.map(
             user => (
               <div className="pure-u-1-3">
-                <TeamMember userId={user.userId} 
-                            snapshots={user.snapshots} 
-                            onClick={this.showUserSessions.bind(this)}/>
+                <TeamMember user={user} />
               </div>
             )
           )}

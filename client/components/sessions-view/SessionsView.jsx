@@ -14,6 +14,7 @@ export default class SessionsView extends React.Component {
   }
 
   componentDidMount() {
+    let userId = this.props.params.userId;
     this._getSessions(function(data) {
       this.setState({ sessionEntries: data });
     }.bind(this));
@@ -34,7 +35,7 @@ export default class SessionsView extends React.Component {
     });
   }
 
-  showSessionReport(sessionId) {
+  showSessionReport() {
     browserHistory.push('/reports/' + sessionId.toString());
   }
 
