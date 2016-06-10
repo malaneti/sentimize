@@ -35,21 +35,24 @@ export default class TeamView extends React.Component {
     });
   }
 
-  showUserSessions(userId) {
+  showUserSessions(e) {
+    console.log("CLICKED: ", e.currentTarget);
     browserHistory.push('/session/' + userId.toString());
   }
 
   _snapshotsByUser(snapshots) {
-    console.log('SNAPSHOTS: ', snapshots);
     //Build an object with user snapshots in an array by user
     let users = snapshots.reduce(function(usersSoFar, snapshot) {
-      usersSoFar[snapshot.userId] = usersSoFar[snapshot.userId].push(snapshot) || [snapshot];
+      if (!usersSoFar[snapshot.userId]) {
+        usersSoFar[snapshot.userId] = [];
+      }
+      usersSoFar[snapshot.userId].push(snapshot);
       return usersSoFar
      },{});
 
     //Convert users object to array of user objects & their related sessions
     let userSnapshots = [];
-    for (let userId of users) {
+    for (let userId in users) {
       userSnapshots.push({
         userId: userId,
         snapshots: users[userId]
