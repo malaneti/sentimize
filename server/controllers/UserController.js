@@ -1,18 +1,29 @@
-var User = require('./../models/UserModel.js');
+var User = require('./../models/UserModel');
+var Team = require('./../models/TeamModel');
 var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 
-exports.createUser = function(req, res) {
+exports.createUser = function(profile, orgName) {
+  var name = profile.displayName.split(' ');
   var userObj = {
-    firstName: req.body.firstname,
-    lastName: req.body.lastname,
-    email: req.body.email,
-    password: req.body.password
+    email: profile.emails[0],
+    username: profile.username,
+    firstName: name[0],
+    lastName: name[1]
   };
 
-  User.where('email', userObj.email).fetch().then(function(user) {
+  User.where('username', userObj.username).fetch().then(function(user) {
     if(!user) {
+      
       return new User(userObj).save();
+
+
+        
+            // new User(userObj).save()
+            //   .then(function(newUser) {
+            //     user = newUser;
+            //     console.log('New User: ', user);
+            //   });
     }
   }).then(function(newUser) {
     res.status(302).redirect('/login');

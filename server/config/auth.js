@@ -1,8 +1,10 @@
 var session = require('express-session');
 //var LocalStrategy = require('passport-local').Strategy;
 var GitHubStrategy = require('passport-github2').Strategy;
-var User = require('../models/UserModel.js');
+var User = require('../models/UserModel');
+var UserController = require('../controllers/UserController');
 var github = require('../../env/github_oauth');
+var request = require('request');
 
 module.exports = function(app, express, passport) {
   app.use(session({
@@ -45,8 +47,46 @@ module.exports = function(app, express, passport) {
     callbackURL: callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
-    return done(null, profile);
+    var options = {
+      url: profile._json.organizations_url,
+      headers: {
+        'User-Agent': profile.username
+      }
+    };
+    function callback(error, response, body) {
+      if (!error && response.statusCode == 200) {
+        var info = JSON.parse(body);
+
+        info.forEach(function(org) {
+          var orgName = org.login;
+          if (orgName === 'hackreactor') {
+            UserController.createUser(profile, orgName);
+            User.where('username', profile.username).fetch()
+              .then(function(user) {
+                console.log('User: ', user);
+                if (!user) {
+                  var name = profile.displayName.split(' ');
+                  var userObj = {
+                    email: profile.emails[0],
+                    username: profile.username,
+                    firstName: name[0],
+                    lastName: name[1]
+                  };
+                  new User(userObj).save()
+                    .then(function(newUser) {
+                      user = newUser;
+                      console.log('New User: ', user);
+                    });
+                }
+                return done(null, user);
+              });
+          }
+        });
+      }
+    }
+
+    request(options, callback);
+
   }));
 
   passport.serializeUser(function(user, done) {
