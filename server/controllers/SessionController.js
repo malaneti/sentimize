@@ -3,9 +3,6 @@ var moment = require('moment');
 
 module.exports = {
   createSession: function(req, res) {
-    // Dummy data for now in: title, description, subject, and duration
-    console.log(req.data, 'REQ DATA')
-    console.log(req.body, 'REQ BODY')
     var sessionObj = {
       userId: req.user.id,
       title: req.body.title,

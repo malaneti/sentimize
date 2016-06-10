@@ -56,13 +56,15 @@ module.exports = {
     var queryField;
     var queryValues;
 
+    //All snapshots for all sessions for a specific user (TeamView component)
     if (req.param('userId')) {
-      queryField = 'userId'; //all snapshots for specific user (TeamView component)
+      queryField = 'userId'; 
     } else if (req.param('sessionId')) {
-      queryField = 'sessionId';  //all snapshots for specific session (ReportView component)
+      //Snapshots for a specific session (ReportView component)
+      queryField = 'sessionId';  
     }
 
-    //Check if multiple queryValues (array) or a single value
+    //Check if multiple queryValues (array) or a single value for the WHERE clause
     if (Array.isArray(req.param(queryField))) {
       queryValues = req.param(queryField).map(function(value){
         return parseInt(value) || value;
