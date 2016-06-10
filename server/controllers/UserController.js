@@ -16,13 +16,13 @@ exports.findOrCreateUser = function(profile, orgName, callback) {
       if(!user) {
         Team.findOrCreateTeam(orgName, function(teamId) {
           userObj.teamid = teamId;
-          console.log('userObj', userObj);
+          
           new User(userObj).save()
             .then(function(newUser) {
               return callback(newUser);
             })
             .catch(function(err) {
-              console.log('Error saving to User table ', err);
+              console.log('Error saving to users table: ', err);
             });
         });
       } else {
@@ -30,7 +30,7 @@ exports.findOrCreateUser = function(profile, orgName, callback) {
       }
     })
     .catch(function(err) {
-      console.log('User Controller ', err);
+      console.log('User Controller error: ', err);
     });
 };
 
@@ -40,6 +40,6 @@ exports.getCurrentUser = function(userid, callback) {
       return callback(currentUser);
     })
     .catch(function(err) {
-      console.error(err);
+      console.error('Error fetching user: ', err);
     });
 };
