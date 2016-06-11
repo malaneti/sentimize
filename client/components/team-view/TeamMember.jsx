@@ -9,6 +9,17 @@ const moodAxisMinutes = 8;
 const moodStart = moodAxisMinutes * 60000;
 
 const options = {
+  scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  beginAtZero: true,
+                  max: 8,
+                  stepSize: 1
+                }
+            }]
+          },
   scaleShowGridLines: true,
   scaleGridLineColor: 'rgba(0,0,0,.05)',
   scaleGridLineWidth: 1,
@@ -26,15 +37,21 @@ const options = {
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
 };
 
+const styles = {
+  graphContainer: {
+    border: '1px solid black',
+    padding: '15px'
+  }
+};
+
 export default class TeamMember extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       expressions: {
-        labels: ['Sadness', 'Disgust', 'Anger', 'Surprise', 'Fear', 'Happiness'],
+        labels: [],
         datasets: [
           {
-            label: 'Expressions',
             backgroundColor: 'rgba(179,181,198,0.2)',
             borderColor: 'rgba(179,181,198,1)',
             pointBackgroundColor: 'rgba(179,181,198,1)',
@@ -46,10 +63,9 @@ export default class TeamMember extends React.Component {
         ]
       },
       mood: {
-        labels: [],   // <-- Remove for Scatter
+        labels: [],
         datasets: [
           {
-            label: 'Mood TimeLine',
             fillColor: 'rgba(220,220,220,0.2)',
             strokeColor: 'rgba(220,220,220,1)',
             pointColor: 'rgba(220,220,220,1)',
@@ -63,53 +79,89 @@ export default class TeamMember extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
+    this._getAvgSnapshot(this.props.snapshots);
+  };
 
-    var sadness = 0;
-    var disgust =0;
-    var anger = 0;
-    var surprise = 0;
-    var fear = 0;
-    var happiness = 0;
-    var dataLength = this.props.snapshots.length;
-    var moodLabel = [];   // Remove For Scatter -->
-    for (var i=1; i <= dataLength; i++) {
-      moodLabel.push(i);
-    }                     // <-- Remove For Scatter
+  _getAvgSnapshot(snapshots) {
     var moodData = Object.assign({}, this.state.mood);
     var expressionsData = Object.assign({}, this.state.expressions);
+    var moodBuckets = {
+      8: 0,
+      9: 0,
+      10: 0,
+      11: 0,
+      12: 0,
+      13: 0,
+      14: 0,
+      15: 0,
+      16: 0,
+      17: 0
+    };
 
-    this.props.snapshots.forEach(ss => {
-/*
-      if ( ss.created_at >= (Date.now() - moodStart) ) {
-        var adjustedTime = ( (ss.created_at - moodStart) / (Date.now() - moodStart) ) * moodAxisMinutes;
-        moodData.datasets[0].data.push({x: adjustedTime, y: ss.mood});
+    var dimensions = {
+      mood: {
+        data: [],
+        labels :[]
+      },
+      expressions: {
+        sadness: 0,
+        anger: 0,
+        surprise: 0,
+        fear: 0,
+        happiness: 0,
+        disgust: 0,
+        neutral: 0
       }
-*/
-      moodData.datasets[0].data.push(ss.mood);
-      sadness += ss.sadness;
-      disgust += ss.disgust;
-      anger += ss.anger;
-      surprise += ss.surprise;
-      fear += ss.fear;
-      happiness += ss.happiness;
+    };
+
+    var expressionsKeys = Object.keys(dimensions.expressions);
+    var i = 0;
+    var bucket = 8;
+    var snapshotsPerBucket = Math.floor(snapshots.length/10);
+
+    snapshots.forEach(function(snapshot) {
+      //Get mood data and calc average per time bucket
+      if (i < snapshotsPerBucket) {
+        moodBuckets[bucket] += snapshot.mood;
+        i++;
+      } else if (bucket < 18) {
+        moodBuckets[bucket] = Math.floor(moodBuckets[bucket]/snapshotsPerBucket) || 0;
+        i = 0;
+        bucket++;
+      }
+
+      //Get expressions data
+      for (let key in snapshot) {
+        if (expressionsKeys.indexOf(key) !== -1) {
+          dimensions.expressions[key] += snapshot[key];
+        }
+      }
     });
 
-    moodData.labels = moodLabel;
-    expressionsData.datasets[0].data = [Math.floor(sadness/dataLength), Math.floor(disgust/dataLength), Math.floor(anger/dataLength),
-      Math.floor(surprise/dataLength), Math.floor(fear/dataLength), Math.floor(happiness/dataLength)];
-    this.setState({expressions: expressionsData, mood: moodData});
-  }
+    //Compose mood data
+    for (let bucket in moodBuckets) {
+      moodData.datasets[0].data.push(moodBuckets[bucket]);
+      moodData.labels.push(bucket);
+    }
+    //Compose expressions data
+    for (let key in dimensions.expressions) {
+      expressionsData.labels.push(key[0].toUpperCase() + key.slice(1));
+      expressionsData.datasets[0].data.push(Math.floor(dimensions.expressions[key]/snapshots.length)); //Calc avg
+    }
 
-  showUserSessions() {
-    browserHistory.push('/session/' + this.props.userId.toString());
+    this.setState({ expressions: expressionsData, mood: moodData });
+  };
+
+  showUserSessions () {
+    browserHistory.push('/session/' + this.props.userId);
   }
 
   render () {
     return (
       <div className="teams-entry-block pure-g" onClick={this.showUserSessions.bind(this)}>
         <div className="pure-u-4-24">
-          <h5>username</h5>
+          <h5>{this.props.username}</h5>
         </div>
         <div className="pure-u-5-24">
           <RadarChart data={this.state.expressions}
@@ -124,66 +176,5 @@ export default class TeamMember extends React.Component {
       </div>
     );
   }
-
-  // _getAvgSnapshot(snapshots) {
-  //   //This function needs:
-  //   // - Aggregate expressions data across all sessions for a user & calc an average
-  //   // - Aggregate expressions data across all sessions for a user & calc an average OR show latest mood data?
-  //   // - return an object with the two datasets to be passed to the chart objects to be rendered for the team member below
-    
-  //   const dimensions = {
-  //     mood: {
-  //       mood: [],
-  //       labels :[]
-  //     },
-  //     expressions: {
-  //       age: 0,
-  //       sadness: 0,
-  //       anger: 0,
-  //       surprise: 0,
-  //       fear: 0,
-  //       happiness: 0,
-  //       disgust: 0,
-  //       neutral: 0
-  //     }
-  //   };
-
-  //   snapshots.forEach(function(snapshot) {
-  //     //Get mood data
-  //     dimensions.mood.mood.push(snapshot.mood);
-  //     dimensions.mood.labels.push(snapshot.created_at);
-
-  //     //Get expressions data
-  //     for (let key in snapshot) {
-  //       if (dimensions.expressions[key]) {
-  //         dimensions.expressions[key] += snapshot[key]/snapshots.length;
-  //       }
-  //     }
-  //   });
-  //   // TODO: Need to return a JSX component
-  //   return dimensions;
-  // }
-
-/*
-  render() {
-    return (
-      <div className="team-member-row" id={this.props.userId} onClick={this.showUserSessions.bind(this)}>
-        <div className="team-member-userName">{this.props.userId}</div>
-        {/*<div className="team-member-description">{props.entry.description}</div>
-        <div className="team-member-subject">
-          <span className="label">Subject: </span>
-          <span className="value">{props.entry.subject}</span>
-        </div>
-        <div className="team-member-date">
-          <span className="label">Date: </span>
-          <span className="value">{props.entry.date}</span>
-        </div>
-        <div className="team-member-duration">7ujn 
-          <span className="label">Duration: </span>
-          <span className="value">{props.entry.duration} seconds</span>
-        </div>}
-      </div>
-    )
-  }
-*/
 }
+
