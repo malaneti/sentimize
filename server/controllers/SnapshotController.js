@@ -55,29 +55,33 @@ module.exports = {
   getSnapshots: function(req, res) {
     var queryField;
     var queryValues;
+    console.log(req.query);
 
     //All snapshots for all sessions for a specific user (TeamView component)
-    if (req.param('userIds')) {
+    if (req.query.userIds) {
       queryField = 'userId'; 
     } else if (req.param('sessionId')) {
       //Snapshots for a specific session (ReportView component)
       queryField = 'sessionId';  
     }
-
     //Check if multiple queryValues (array) or a single value for the WHERE clause
-    if (Array.isArray(req.param(queryField))) {
-      queryValues = req.param(queryField).map(function(value){
+    if (queryField === 'userId') {
+      queryValues = req.query.userIds.map(function(value){
         return parseInt(value) || value;
       });
     } else {
       queryValues = req.param(queryField);
     }
 
+    console.log(req.params);
+    console.log("QUERY STUFF", queryField, queryValues);
+
     //Use Knex QueryBuilder.whereIn() function inside Bookshelf.query() to check multiple values in the WHERE clause
     Snapshot.query(function(qb) {
         qb.whereIn(queryField, queryValues);
       }).fetchAll()
       .then(function(snapshots) {
+        console.log("SNAPSHOTS", snapshots);
         res.status(200).send(snapshots);
       })
       .catch(function(err) {
