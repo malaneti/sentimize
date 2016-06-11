@@ -47,7 +47,7 @@ const styles = {
 export default class TeamMember extends React.Component {
   constructor(props) {
     super(props);
-        this.state = {
+    this.state = {
       expressions: {
         labels: ['Sadness', 'Disgust', 'Anger', 'Surprise', 'Fear', 'Happiness'],
         datasets: [
