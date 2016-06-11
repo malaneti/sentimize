@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import React from 'react';
 import ReactDom from 'react-dom';
+import { browserHistory } from 'react-router';
 import {Line as LineChart} from 'react-chartjs';
 import {Radar as RadarChart} from 'react-chartjs';
 
@@ -20,10 +21,16 @@ const options = {
   datasetStrokeWidth: 2,
   datasetFill: true,
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-}
+};
 
-export default class ChartComponent extends React.Component {
+const styles = {
+  graphContainer: {
+    border: '1px solid black',
+    padding: '15px'
+  }
+};
 
+export default class TeamMemberEntryMock extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -57,14 +64,14 @@ export default class ChartComponent extends React.Component {
           }
         ]
       }
-    }
+    };
   }
 
   componentDidMount () {
     $.ajax({
       type: 'GET',
       url: '/api/snapshot',
-      data: { sessionId: this.props.params.sessionId },
+      data: { sessionId: this.props.sessionId },
       error: function(request, status, error) {
         console.error('error while fetching report data', error);
       },
@@ -101,20 +108,27 @@ export default class ChartComponent extends React.Component {
 
           console.log(this.state);
       }.bind(this)
-    })
-  };
+    });
+  }
+
+  showSessionReport () {
+    browserHistory.push('/reports/' + this.props.sessionId.toString());
+  }
 
   render () {
     return (
-      <div className="pure-g team-member-box">
-        <div className="pure-u-1-5">
-          <h3>Expressions Chart</h3>
+      <div className="teams-entry-block pure-g" onClick={this.showSessionReport.bind(this)}>
+        <div className="pure-u-4-24">
+          <h5>username</h5>
+        </div>
+        <div className="pure-u-5-24">
+          <h5>Expressions Chart</h5>
           <RadarChart data={this.state.expressions}
                       redraw options={options}
                       width="50" height="60"/>
         </div>
-        <div className="pure-u-3-5">
-          <h3>Mood Chart</h3>
+        <div className="pure-u-12-24">
+          <h5>Mood Chart</h5>
           <LineChart data={this.state.mood}
                      redraw options={options}
                      width="700" height="60"/>
@@ -122,5 +136,22 @@ export default class ChartComponent extends React.Component {
       </div>
     );
   }
-}
+};
 
+/*
+        <div className="teams-entry-title">{this.props.entry.title}</div>
+        <div className="teams-entry-description">{this.props.entry.description}</div>
+        <div className="teams-entry-subject">
+          <span className="label">Subject: </span>
+          <span className="value">{this.props.entry.subject}</span>
+        </div>
+        <div className="teams-entry-date">
+          <span className="label">Date: </span>
+          <span className="value">{this.props.entry.date}</span>
+        </div>
+        <div className="teams-entry-duration">
+          <span className="label">Duration: </span>
+          <span className="value">{this.props.entry.duration} seconds</span>
+        </div>
+      </div>
+*/

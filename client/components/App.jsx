@@ -7,6 +7,7 @@ import HomeView from './home-view/HomeView.jsx';
 import RecordView from './record-view/RecordView.jsx';
 import TeamView from './team-view/TeamView.jsx';
 import SessionsView from './sessions-view/SessionsView.jsx';
+import TeamsViewMock from './teams-view/TeamsViewMock.jsx';
 import ReportView from './report-view/ReportView.jsx';
 import SettingsView from './settings-view/SettingsView.jsx';
 
@@ -23,6 +24,7 @@ export default class App extends React.Component {
           <Route path="record" component={RecordView} />
           <Route path="team" component={TeamView} />
           <Route path="session/:userId" component={SessionsView} />
+          <Route path="teams" component={TeamsViewMock} />
           <Route path="reports/:sessionId" component={ReportView} />
           <Route path="settings" component={SettingsView} />
         </Route>
