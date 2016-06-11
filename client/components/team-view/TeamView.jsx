@@ -93,6 +93,7 @@ export default class TeamView extends React.Component {
         snapshots: users[userId]
       })
     }
+    console.log(userSnapshots);
     return userSnapshots;
   }
 
@@ -103,10 +104,8 @@ export default class TeamView extends React.Component {
         <div className="pure-g">
           {this.state.userSnapshots.map(
             user => (
-              <div className='pure-g'>
-                <div className="pure-u-9-24">
-                  <TeamMember userId={user.userId} snapshots={user.snapshots} />
-                </div>
+              <div className="pure-u-9-24">
+                <TeamMember userId={user.userId} snapshots={user.snapshots} />
               </div>
             )
           )}

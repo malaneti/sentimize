@@ -6,7 +6,6 @@ export default class TeamMember extends React.Component {
     super(props);
   }
 
-
   componentWillMount() {
  
   }

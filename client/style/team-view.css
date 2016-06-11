@@ -10,7 +10,7 @@
 
 .team-member-row {
   font-family: 'Roboto', sans-serif;
-  display: block;
+  display: inline-block;
   letter-spacing: .5px;
   border-radius: 5px;
   margin: 20px auto 40px;
@@ -26,6 +26,10 @@
 
 .team-member-row:hover {
   background-color: #D1E8F3;
+}
+
+.team-view-row {
+  display: block;
 }
 
 .team-member-title {
