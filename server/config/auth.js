@@ -28,7 +28,6 @@ module.exports = function(app, express, passport) {
       }
     };
     function callback(error, response, body) {
-      console.log(body);
       if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
 
