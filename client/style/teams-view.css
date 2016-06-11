@@ -8,9 +8,6 @@
 }
 
 .teams-entry-block {
-  height: 100%;
-  display: flex;
-  align-items: center;
   font-family: 'Roboto', sans-serif;
   letter-spacing: .5px;
   border-radius: 14px;
@@ -28,22 +25,33 @@
 }
 
 .teams-entry-user {
-  margin: 0 auto;
+  letter-spacing: 2px
+  padding: 30px 0 10px;
   font-size: 22px;
   font-weight: 500;
-  letter-spacing: 2px;
 }
 
-.teams-entry-user h5 {
-  padding: 0;
-}
 
 .teams-entry-radar-chart {
-  margin: 0 auto;
+  margin: 13px 0;
 }
 
 .teams-entry-mood-chart {
-  margin: 0 auto;
+  margin: 13px 0;
+}
+
+.teams-entry-user {
+  letter-spacing: 2px
+  padding: 30px 0 10px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.teams-entry-description {
+  margin: 15px 0 20px;
+  font-size: 16px;
+  color: rgb(140,140,140);
+  height: 60px;
 }
 
 .teams-entry-block .label {
@@ -56,5 +64,17 @@
 .teams-entry-block .value {
   font-weight: 300;
   font-size: 18px;
+}
+
+.teams-entry-subject {
+  margin: 40px 0 13px;
+}
+
+.teams-entry-date {
+  margin: 13px 0;
+}
+
+.teams-entry-duration {
+  margin: 13px 0;
 }
 

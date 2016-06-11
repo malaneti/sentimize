@@ -13,6 +13,7 @@ export default class NavBar extends React.Component {
         <div className="pure-menu pure-menu-horizontal pure-menu-fixed">
           <ul className="pure-menu-list">
             <li className="pure-menu-item"><Link to="/record" className="pure-menu-link">Record</Link></li>
+            <li className="pure-menu-item"><Link to="/session/:userId" className="pure-menu-link">Sessions</Link></li>
             <li className="pure-menu-item"><Link to="/team" className="pure-menu-link">Teams</Link></li>
             <li className="pure-menu-item"><Link to="/video/:userId" className="pure-menu-link">Video</Link></li>
             <li className="pure-menu-item pure-menu-has-children pure-menu-allow-hover">

@@ -28,13 +28,20 @@ const options = {
   bezierCurve: true,
   bezierCurveTension: 0.4,
   pointDot: true,
-  pointDotRadius: 1,
+  pointDotRadius: 4,
   pointDotStrokeWidth: 1,
   pointHitDetectionRadius: 20,
   datasetStroke: true,
   datasetStrokeWidth: 2,
   datasetFill: true,
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
+};
+
+const styles = {
+  graphContainer: {
+    border: '1px solid black',
+    padding: '15px'
+  }
 };
 
 export default class TeamMember extends React.Component {
@@ -153,15 +160,15 @@ export default class TeamMember extends React.Component {
   render () {
     return (
       <div className="teams-entry-block pure-g" onClick={this.showUserSessions.bind(this)}>
-        <div className="teams-entry-user pure-u-3-24">
+        <div className="pure-u-4-24">
           <h5>{this.props.username}</h5>
         </div>
-        <div className="teams-entry-radar-chart pure-u-3-24">
+        <div className="pure-u-5-24">
           <RadarChart data={this.state.expressions}
                       redraw options={options}
-                      width="120" height="120"/>
+                      width="50" height="60"/>
         </div>
-        <div className="teams-entry-mood-chart pure-u-16-24">
+        <div className="pure-u-12-24">
           <LineChart data={this.state.mood}
                      redraw options={options}
                      width="700" height="60"/>
