@@ -9,17 +9,6 @@ const moodAxisMinutes = 8;
 const moodStart = moodAxisMinutes * 60000;
 
 const options = {
-  scales: {
-            xAxes: [{
-                type: 'linear',
-                position: 'bottom',
-                ticks: {
-                  beginAtZero: true,
-                  max: 8,
-                  stepSize: 1
-                }
-            }]
-          },
   scaleShowGridLines: true,
   scaleGridLineColor: 'rgba(0,0,0,.05)',
   scaleGridLineWidth: 1,
@@ -35,13 +24,6 @@ const options = {
   datasetStrokeWidth: 2,
   datasetFill: true,
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-};
-
-const styles = {
-  graphContainer: {
-    border: '1px solid black',
-    padding: '15px'
-  }
 };
 
 export default class TeamMember extends React.Component {
@@ -64,6 +46,7 @@ export default class TeamMember extends React.Component {
         ]
       },
       mood: {
+        labels: [],   // <-- Remove for Scatter
         datasets: [
           {
             label: 'Mood TimeLine',
@@ -89,16 +72,21 @@ export default class TeamMember extends React.Component {
     var fear = 0;
     var happiness = 0;
     var dataLength = this.props.snapshots.length;
+    var moodLabel = [];   // Remove For Scatter -->
+    for (var i=1; i <= dataLength; i++) {
+      moodLabel.push(i);
+    }                     // <-- Remove For Scatter
     var moodData = Object.assign({}, this.state.mood);
     var expressionsData = Object.assign({}, this.state.expressions);
 
     this.props.snapshots.forEach(ss => {
-
+/*
       if ( ss.created_at >= (Date.now() - moodStart) ) {
         var adjustedTime = ( (ss.created_at - moodStart) / (Date.now() - moodStart) ) * moodAxisMinutes;
         moodData.datasets[0].data.push({x: adjustedTime, y: ss.mood});
       }
-
+*/
+      moodData.datasets[0].data.push(ss.mood);
       sadness += ss.sadness;
       disgust += ss.disgust;
       anger += ss.anger;
@@ -107,6 +95,7 @@ export default class TeamMember extends React.Component {
       happiness += ss.happiness;
     });
 
+    moodData.labels = moodLabel;
     expressionsData.datasets[0].data = [Math.floor(sadness/dataLength), Math.floor(disgust/dataLength), Math.floor(anger/dataLength),
       Math.floor(surprise/dataLength), Math.floor(fear/dataLength), Math.floor(happiness/dataLength)];
     this.setState({expressions: expressionsData, mood: moodData});
