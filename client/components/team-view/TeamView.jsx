@@ -1,9 +1,7 @@
 import React from 'react';
-import TeamMember from './TeamMember.jsx';
 import { browserHistory } from 'react-router';
 import $ from 'jquery';
-
-// import dummyData from './../../../data/session-data.json';
+import TeamMember from './TeamMember.jsx';
 
 export default class TeamView extends React.Component {
   constructor(props) {
@@ -21,7 +19,7 @@ export default class TeamView extends React.Component {
       this.setState({
         userId: currentUser.id,
         teamId: parseInt(currentUser.teamid)
-      });  
+      });
       this._getTeamUsers(function(userIds) {
         this.setState({ userIds: userIds });
         this._getSnapshots(function(snapshots) {
@@ -99,12 +97,11 @@ export default class TeamView extends React.Component {
 
   render() {
     return (
-      <div className="view team-view">
-        <h4 className="team-view-title">Team Dashboard</h4>
-        <div className="pure-g">
+      <div className="view teams-view">
+        <div>
           {this.state.userSnapshots.map(
             user => (
-              <div className="pure-u-9-24">
+              <div>
                 <TeamMember userId={user.userId} snapshots={user.snapshots} />
               </div>
             )

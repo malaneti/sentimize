@@ -1,8 +1,8 @@
 @import url('./home-view.css');
-@import url('./team-view.css');
 @import url('./sessions-view.css');
 @import url('./record-view.css');
 @import url('./settings-view.css');
+@import url('./teams-view.css');
 
 .main-layout {
   /*Same as the height of the footer*/

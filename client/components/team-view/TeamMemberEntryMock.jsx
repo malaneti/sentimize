@@ -1,10 +1,25 @@
 import $ from 'jquery';
 import React from 'react';
 import ReactDom from 'react-dom';
+import { browserHistory } from 'react-router';
 import {Line as LineChart} from 'react-chartjs';
 import {Radar as RadarChart} from 'react-chartjs';
 
+const moodAxisMinutes = 8;
+const moodStart = moodAxisMinutes * 60000;
+
 const options = {
+  scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  beginAtZero: true,
+                  max: 8,
+                  stepSize: 1
+                }
+            }]
+          },
   scaleShowGridLines: true,
   scaleGridLineColor: 'rgba(0,0,0,.05)',
   scaleGridLineWidth: 1,
@@ -20,20 +35,18 @@ const options = {
   datasetStrokeWidth: 2,
   datasetFill: true,
   legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>'
-}
+};
 
 const styles = {
   graphContainer: {
     border: '1px solid black',
     padding: '15px'
   }
-}
+};
 
-export default class ChartComponent extends React.Component {
-
-  constructor(props) {
-    super(props)
-    console.log(this.props.params);
+export default class TeamMemberEntryMock extends React.Component {
+  constructor (props) {
+    super(props);
     this.state = {
       expressions: {
         labels: ['Sadness', 'Disgust', 'Anger', 'Surprise', 'Fear', 'Happiness'],
@@ -51,7 +64,6 @@ export default class ChartComponent extends React.Component {
         ]
       },
       mood: {
-        labels: [],
         datasets: [
           {
             label: 'Mood TimeLine',
@@ -65,14 +77,14 @@ export default class ChartComponent extends React.Component {
           }
         ]
       }
-    }
+    };
   }
 
   componentDidMount () {
     $.ajax({
       type: 'GET',
       url: '/api/snapshot',
-      data: { sessionId: this.props.params.sessionId },
+      data: { sessionId: this.props.sessionId },
       error: function(request, status, error) {
         console.error('error while fetching report data', error);
       },
@@ -85,16 +97,19 @@ export default class ChartComponent extends React.Component {
         var surprise = 0;
         var fear = 0;
         var happiness = 0;
+console.log( 'about to do something with sessionData.length' );
         var dataLength = sessionData.length;
-        var moodLabel = [];
-        for (var i=1; i <= dataLength; i++) {
-          moodLabel.push(i);
-        }
+console.log( 'just did something with sessionData.length' );
         var moodData = Object.assign({}, this.state.mood);
         var expressionsData = Object.assign({}, this.state.expressions);
 
         sessionData.forEach(ss => {
-          moodData.datasets[0].data.push(ss.mood);
+
+          if ( ss.created_at >= (Date.now() - moodStart) ) {
+            var adjustedTime = ( (ss.created_at - moodStart) / (Date.now() - moodStart) ) * moodAxisMinutes;
+            moodData.datasets[0].data.push({x: adjustedTime, y: ss.mood});
+          }
+
           sadness += ss.sadness;
           disgust += ss.disgust;
           anger += ss.anger;
@@ -102,33 +117,39 @@ export default class ChartComponent extends React.Component {
           fear += ss.fear;
           happiness += ss.happiness;
         })
-        moodData.labels = moodLabel;
         expressionsData.datasets[0].data = [Math.floor(sadness/dataLength), Math.floor(disgust/dataLength), Math.floor(anger/dataLength),
           Math.floor(surprise/dataLength), Math.floor(fear/dataLength), Math.floor(happiness/dataLength)];
-          this.setState({expressions: expressionsData, mood: moodData});
+        this.setState({expressions: expressionsData, mood: moodData});
 
-          console.log(this.state);
+        console.log(this.state);
       }.bind(this)
     });
   }
 
+  showSessionReport () {
+    browserHistory.push('/reports/' + this.props.sessionId.toString());
+  }
+
   render () {
     return (
-      <div>
-        <div style={styles.graphContainer}>
-          <h3>Mood Chart</h3>
-          <LineChart data={this.state.mood}
-            redraw options={options}
-            width="600" height="250"/>
+      <div className="teams-entry-block pure-g" onClick={this.showSessionReport.bind(this)}>
+        <div className="pure-u-4-24">
+          <h5>username</h5>
         </div>
-        <div style={styles.graphContainer}>
-          <h3>Expressions Chart</h3>
+        <div className="pure-u-5-24">
+          <h5>Expressions Chart</h5>
           <RadarChart data={this.state.expressions}
-            redraw options={options}
-            width="600" height="250"/>
+                      redraw options={options}
+                      width="50" height="60"/>
+        </div>
+        <div className="pure-u-12-24">
+          <h5>Mood Chart</h5>
+          <LineChart data={this.state.mood}
+                     redraw options={options}
+                     width="700" height="60"/>
         </div>
       </div>
     );
   }
-}
+};
 

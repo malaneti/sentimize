@@ -2,7 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 
 export default class SessionEntry extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
@@ -10,7 +10,7 @@ export default class SessionEntry extends React.Component {
     browserHistory.push('/reports/' + this.props.sessionId);
   }
 
-  render() {
+  render () {
     return (
       <div className="session-entry-row" onClick={this.showSessionReport.bind(this)}>
         <div className="session-entry-title">{this.props.session.title}</div>
@@ -30,4 +30,5 @@ export default class SessionEntry extends React.Component {
       </div>
     );
   }
-}
+};
+
