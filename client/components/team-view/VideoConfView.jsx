@@ -9,12 +9,28 @@ export default class VideoConfView extends React.Component {
       conversationsClient: null,
       activeConversation: null,
       previewMedia: null,
-      identity: null
+      identity: null,
+      username: null
     };
   }
 
   componentWillMount() {
     // Check for WebRTC
+    $.ajax({
+      method: 'GET',
+      url: '/api/users/teamuser',
+      dataType: 'json',
+      data: { userId: this.props.params.userId },
+      success: function(data) {
+        this.setState({
+          username: data.username
+        })
+      }.bind(this),
+      error: function(error) {
+        console.error('Get User Error:', error);
+      }.bind(this)
+    });
+
     if (!navigator.webkitGetUserMedia && !navigator.mozGetUserMedia) {
       alert('WebRTC is not available in your browser.');
     }
@@ -121,6 +137,13 @@ export default class VideoConfView extends React.Component {
     };
   }
 
+  closePreview() {
+    this.setState({
+      previewMedia: null
+    });
+
+  }
+
   // Activity log
   log(message) {
     document.getElementById('log-content').innerHTML = message;
@@ -137,7 +160,7 @@ export default class VideoConfView extends React.Component {
           </div>
           <div id="invite-controls">
             <p className="instructions">Invite another Video Client</p>
-            <input id="invite-to" type="text" placeholder="Identity to send an invite to" />
+            <input id="invite-to" type="text" placeholder="Identity to send an invite to" value={this.state.username}/>
             <button id="button-invite" onClick={this.invite.bind(this)}>Send Invite</button>
           </div>
           <div id="log">

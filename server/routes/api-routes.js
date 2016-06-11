@@ -7,6 +7,7 @@ module.exports = function(app) {
   // See auth-routes for POST to /api/users
   app.get('/api/users', UserController.getUser);
   app.get('/api/users/team', UserController.getUsersTeam);
+  app.get('/api/users/teamuser', UserController.getTeamUser);
 
   app.get('/api/session',  SessionController.getSessions);
   app.post('/api/session', SessionController.createSession);

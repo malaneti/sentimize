@@ -38,10 +38,15 @@ export default class SessionsView extends React.Component {
     browserHistory.push('/reports/' + this.props.sessionId);
   }
 
+  videoCall() {
+    browserHistory.push('/video/' + this.props.params.userId);
+  }
+
   render() {
     return (
       <div className="view sessions-view">
         <h4 className="sessions-view-title">User Sessions</h4>
+        <button onClick={this.videoCall.bind(this)}>Video Call</button>
         <div className="pure-g">
           {this.state.sessionEntries.map(
             session => (

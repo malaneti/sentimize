@@ -26,7 +26,7 @@ export default class App extends React.Component {
           <Route path="team" component={TeamView} />
           <Route path="session/:userId" component={SessionsView} />
           <Route path="teams" component={TeamsViewMock} />
-          <Route path="video" component={VideoConfView} />
+          <Route path="video/:userId" component={VideoConfView} />
           <Route path="reports/:sessionId" component={ReportView} />
           <Route path="settings" component={SettingsView} />
         </Route>
