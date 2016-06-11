@@ -5,6 +5,9 @@ import { browserHistory } from 'react-router';
 import {Line as LineChart} from 'react-chartjs';
 import {Radar as RadarChart} from 'react-chartjs';
 
+const moodAxisMinutes = 8;
+const moodStart = moodAxisMinutes * 60000;
+
 const options = {
   scales: {
             xAxes: [{
@@ -12,10 +15,11 @@ const options = {
                 position: 'bottom',
                 ticks: {
                   beginAtZero: true,
-                  max: 6,
+                  max: 8,
                   stepSize: 1
                 }
-            }] },
+            }]
+          },
   scaleShowGridLines: true,
   scaleGridLineColor: 'rgba(0,0,0,.05)',
   scaleGridLineWidth: 1,
@@ -39,8 +43,6 @@ const styles = {
     padding: '15px'
   }
 };
-
-const moodStart = 5 * 60000;
 
 export default class TeamMemberEntryMock extends React.Component {
   constructor (props) {
@@ -95,16 +97,19 @@ export default class TeamMemberEntryMock extends React.Component {
         var surprise = 0;
         var fear = 0;
         var happiness = 0;
+console.log( 'about to do something with sessionData.length' );
         var dataLength = sessionData.length;
-        var moodLabel = [];
-        for (var i=1; i <= dataLength; i++) {
-          moodLabel.push(i);
-        }
+console.log( 'just did something with sessionData.length' );
         var moodData = Object.assign({}, this.state.mood);
         var expressionsData = Object.assign({}, this.state.expressions);
 
         sessionData.forEach(ss => {
-          moodData.datasets[0].data.push(ss.mood);
+
+          if ( ss.created_at >= (Date.now() - moodStart) ) {
+            var adjustedTime = ( (ss.created_at - moodStart) / (Date.now() - moodStart) ) * moodAxisMinutes;
+            moodData.datasets[0].data.push({x: adjustedTime, y: ss.mood});
+          }
+
           sadness += ss.sadness;
           disgust += ss.disgust;
           anger += ss.anger;
@@ -112,7 +117,6 @@ export default class TeamMemberEntryMock extends React.Component {
           fear += ss.fear;
           happiness += ss.happiness;
         })
-        moodData.labels = moodLabel;
         expressionsData.datasets[0].data = [Math.floor(sadness/dataLength), Math.floor(disgust/dataLength), Math.floor(anger/dataLength),
           Math.floor(surprise/dataLength), Math.floor(fear/dataLength), Math.floor(happiness/dataLength)];
         this.setState({expressions: expressionsData, mood: moodData});
