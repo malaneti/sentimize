@@ -33,6 +33,7 @@ export default class ChartComponent extends React.Component {
 
   constructor(props) {
     super(props)
+    console.log(this.props.params);
     this.state = {
       expressions: {
         labels: ['Sadness', 'Disgust', 'Anger', 'Surprise', 'Fear', 'Happiness'],

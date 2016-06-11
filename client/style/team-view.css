@@ -1,16 +1,16 @@
-.sessions-view {
+.team-view {
   margin: 0 auto 70px;
   max-width: 1150px;
 }
 
-.sessions-view-title {
+.team-view-title {
   font-weight: 300;
   font-size: 40px;
-  margin: 40px 0 20px;
 }
 
-.session-entry-row {
+.team-member-row {
   font-family: 'Roboto', sans-serif;
+  display: inline-block;
   letter-spacing: .5px;
   border-radius: 5px;
   margin: 20px auto 40px;
@@ -24,44 +24,48 @@
   box-shadow: 3px 3px 4px rgb(230,230,230);
 }
 
-.session-entry-block:hover {
+.team-member-row:hover {
   background-color: #D1E8F3;
 }
 
-.session-entry-title {
+.team-view-row {
+  display: block;
+}
+
+.team-member-title {
   letter-spacing: 2px
   padding: 30px 0 10px;
   font-size: 22px;
   font-weight: 500;
 }
 
-.session-entry-description {
+.team-member-description {
   margin: 15px 0 20px;
   font-size: 16px;
   color: rgb(140,140,140);
   height: 60px;
 }
 
-.session-entry-block .label {
+.team-member-row .label {
   text-transform: uppercase;
   color: rgb(150, 150, 150);
   font-weight: 500;
   font-size: 12px;
 }
 
-.session-entry-block .value {
+.team-member-row .value {
   font-weight: 300;
   font-size: 18px;
 }
 
-.session-entry-subject {
+.team-member-subject {
   margin: 40px 0 13px;
 }
 
-.session-entry-date {
+.team-member-date {
   margin: 13px 0;
 }
 
-.session-entry-duration {
+.team-member-duration {
   margin: 13px 0;
 }

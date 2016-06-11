@@ -23,25 +23,31 @@ export default class SessionsView extends React.Component {
     $.ajax({
       method: 'GET',
       url: '/api/session',
+      dataType: 'json',
+      data: { userId: this.props.params.userId },
       success: function(data) {
         callback(data);
       },
       error: function(error) {
         console.error('_getSessions Error:', error);
-      },
-      dataType: 'json'
+      }
     });
+  }
+
+  showSessionReport() {
+    browserHistory.push('/reports/' + this.props.sessionId);
   }
 
   render() {
     return (
       <div className="view sessions-view">
-        <h4 className="sessions-view-title">My Sessions</h4>
+        <h4 className="sessions-view-title">User Sessions</h4>
         <div className="pure-g">
           {this.state.sessionEntries.map(
-            entry => (
+            session => (
               <div className="pure-u-1-3">
-                <SessionEntry entry={entry} sessionId={entry.id} />
+                <SessionEntry session={session} 
+                              sessionId={session.id} />
               </div>
             )
           )}
