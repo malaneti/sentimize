@@ -42,7 +42,8 @@ export default class HomeView extends React.Component {
         <h4 className="home-view-welcome">Welcome to sentimize.</h4>
         <div className="home-view-instruction">To begin a new video session, click on <span className="instruction-highlight"><Link to="/record">Record</Link></span>.</div>
         <div className="home-view-instruction">To view your team <span className="instruction-highlight"><Link to="/team">Team</Link></span>.</div>
-        <div className="home-view-instruction">To see reports for all past sessions, click on <span className="instruction-highlight"><Link to="/sessions">Sessions</Link></span>.</div>
+        <div className="home-view-instruction">To see reports for all past sessions, click on <span className="instruction-highlight"><Link to={"/session/" + this.state.userId}>Sessions</Link></span>.</div>
+        <div className="home-view-instruction">To start a conference call, click on <span className="instruction-highlight"><Link to={"/video/" + this.state.userId}>Video</Link></span>.</div>
         <div className="home-view-instruction"></div>
       </div>
     )

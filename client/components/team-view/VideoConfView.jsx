@@ -10,7 +10,7 @@ export default class VideoConfView extends React.Component {
       activeConversation: null,
       previewMedia: null,
       identity: null,
-      username: null
+      username: ''
     };
   }
 
@@ -22,9 +22,11 @@ export default class VideoConfView extends React.Component {
       dataType: 'json',
       data: { userId: this.props.params.userId },
       success: function(data) {
-        this.setState({
-          username: data.username
-        })
+        if (this.state.identity !== data.username) {
+          this.setState({
+            username: data.username
+          });
+        }
       }.bind(this),
       error: function(error) {
         console.error('Get User Error:', error);
