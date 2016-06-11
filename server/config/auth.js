@@ -22,7 +22,7 @@ module.exports = function(app, express, passport) {
   },
   function(accessToken, refreshToken, profile, done) {
     var options = {
-      url: profile._json.organizations_url + '?client_id=' + github.GITHUB_CLIENT_ID + '&client_secret=' + github.GITHUB_CLIENT_SECRET,
+      url: profile._json.organizations_url,
       headers: {
         'User-Agent': profile.username
       }
