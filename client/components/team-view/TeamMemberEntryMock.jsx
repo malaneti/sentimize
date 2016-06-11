@@ -6,6 +6,16 @@ import {Line as LineChart} from 'react-chartjs';
 import {Radar as RadarChart} from 'react-chartjs';
 
 const options = {
+  scales: {
+            xAxes: [{
+                type: 'linear',
+                position: 'bottom',
+                ticks: {
+                  beginAtZero: true,
+                  max: 6,
+                  stepSize: 1
+                }
+            }] },
   scaleShowGridLines: true,
   scaleGridLineColor: 'rgba(0,0,0,.05)',
   scaleGridLineWidth: 1,
@@ -52,7 +62,6 @@ export default class TeamMemberEntryMock extends React.Component {
         ]
       },
       mood: {
-        labels: [],
         datasets: [
           {
             label: 'Mood TimeLine',
