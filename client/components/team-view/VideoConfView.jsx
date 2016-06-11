@@ -1,17 +1,26 @@
 import React from 'react';
 import $ from 'jquery';
+var socket = io();
 
 export default class VideoConfView extends React.Component {
   constructor(props) {
     super(props);
 
+    this.text = '';
     this.state = {
       conversationsClient: null,
       activeConversation: null,
       previewMedia: null,
       identity: null,
-      username: ''
+      username: '',
+      messages: [{
+        text: 'Welcome to Chat!'
+      }]
     };
+  }
+
+  componentDidMount() {
+    socket.on('messageAdded', this.onMessageAdded.bind(this));
   }
 
   componentWillMount() {
@@ -56,6 +65,12 @@ export default class VideoConfView extends React.Component {
         this.log('Could not connect to Twilio: ' + error.message);
       }.bind(this));
     }.bind(this));
+  }
+
+  onMessageAdded(message) {
+    this.setState({
+      messages: this.state.messages.concat(message)
+    });
   }
 
   // Successfully connected!
@@ -139,16 +154,29 @@ export default class VideoConfView extends React.Component {
     };
   }
 
-  closePreview() {
-    this.setState({
-      previewMedia: null
-    });
-
-  }
-
   // Activity log
   log(message) {
     document.getElementById('log-content').innerHTML = message;
+  }
+
+  setText(value) {
+    this.text = value;
+  }
+
+  sendMessage(e) {
+    e.preventDefault();
+
+    var input = this.text;
+    console.log(input);
+    var message = {
+      text: input
+    };
+
+    this.setState({
+      messages: this.state.messages.concat(message)
+    });
+
+    socket.emit('messageAdded', message);
   }
 
   render() {
@@ -167,6 +195,24 @@ export default class VideoConfView extends React.Component {
           </div>
           <div id="log">
             <p>&gt;&nbsp;<span id="log-content">Preparing to listen</span>...</p>
+          </div>
+        </div>
+        <div className="chat">
+          <div className="messages">
+            <ul>
+              {this.state.messages.map(function(message) {
+                return (
+                  <li>{message.text}</li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="inputText">
+            <form>
+              <input type="text" size="50" placeholder="Type your message here" id="m" autocomplete="off" onChange={ e => this.setText(e.target.value) }/>
+              <br />
+              <button onClick={this.sendMessage.bind(this)}>Send</button>
+            </form>
           </div>
         </div>
       </div>

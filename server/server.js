@@ -32,7 +32,20 @@ app.get('/*', function(req, res) {
   res.redirect('/');
 })
 
-app.listen(Number(process.env.PORT), process.env.HOST, function() {
+var server = app.listen(Number(process.env.PORT), process.env.HOST, function() {
   console.log('NODE_ENV: ' + process.env.NODE_ENV);
   console.log(process.env.APP_NAME + ' is listening at ' + process.env.HOST + ' on port ' + process.env.PORT + '.')
+});
+
+var io = require('socket.io')(server);
+
+io.on('connection', function (socket) {
+  console.log('a user connected');
+  socket.on('disconnect', function () {
+    console.log('a user disconnected');
+  });
+  socket.on('messageAdded', function(message) {
+    console.log('message ', message);
+    socket.broadcast.emit('messageAdded', message);
+  });
 });

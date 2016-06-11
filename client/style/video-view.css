@@ -31,3 +31,16 @@ div#controls div#invite-controls{display:none}
 div#controls div#invite-controls input{width:100%;height:2.5em;padding:.5em;display:block}
 div#controls div#log{width:35%;height:9.5em;margin-top:2.75em;text-align:left;padding:1.5em;float:right}
 div#controls div#log p{color:#686865;font-family:'Share Tech Mono','Courier New',Courier,fixed-width;font-size:1.25em;line-height:2em;margin-left:1em;text-indent:-1.25em;width:90%}
+
+.chat {
+  float: left;
+}
+
+.messages {
+  height: 200px;
+  border-style: solid;
+}
+
+.messages ul li {
+  list-style-type: none;
+}
