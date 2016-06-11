@@ -161,7 +161,7 @@ export default class TeamMember extends React.Component {
     return (
       <div className="teams-entry-block pure-g" onClick={this.showUserSessions.bind(this)}>
         <div className="pure-u-4-24">
-          <h5>username</h5>
+          <h5>{this.props.username}</h5>
         </div>
         <div className="pure-u-5-24">
           <RadarChart data={this.state.expressions}

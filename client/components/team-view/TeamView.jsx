@@ -9,6 +9,7 @@ export default class TeamView extends React.Component {
     this.state = {
       userId: null,
       teamId: null,
+      users: [],
       userIds: [],
       userSnapshots: []
     }
@@ -20,8 +21,9 @@ export default class TeamView extends React.Component {
         userId: currentUser.id,
         teamId: parseInt(currentUser.teamid)
       });
-      this._getTeamUsers(function(userIds) {
-        this.setState({ userIds: userIds });
+      this._getTeamUsers(function(users) {
+        this.setState({ userIds: users.userIds, users: users.users });
+        console.log(this.state);
         this._getSnapshots(function(snapshots) {
           this.setState({ userSnapshots: this._snapshotsByUser(snapshots) });
         }.bind(this));
@@ -50,7 +52,16 @@ export default class TeamView extends React.Component {
       dataType: 'json',
       data: { teamid: this.state.teamId },
       success: function(data) {
-        callback(data);
+        var users = {
+          userIds: [],
+          users: []
+        }
+  
+        data.forEach(function(user) {
+          users.userIds.push(user.userId)
+          users.users.push(user);
+        })
+        callback(users);
       },
       error: function(error) {
         console.error('_getTeamUsers Error:', error);
@@ -85,13 +96,17 @@ export default class TeamView extends React.Component {
 
     //Convert users object to array of user objects & their related sessions
     let userSnapshots = [];
-    for (let userId in users) {
-      userSnapshots.push({
-        userId: userId,
-        snapshots: users[userId]
-      })
-    }
-    console.log(userSnapshots);
+    this.state.users.forEach(function(user) {
+      for (let userId in users) {
+        if (Number(user.userId) === Number(userId)) {
+          userSnapshots.push({
+            userId: userId,
+            username: user.username,
+            snapshots: users[userId]
+          })
+        }
+      }
+    });
     return userSnapshots;
   }
 
@@ -102,7 +117,7 @@ export default class TeamView extends React.Component {
           {this.state.userSnapshots.map(
             user => (
               <div>
-                <TeamMember userId={user.userId} snapshots={user.snapshots} />
+                <TeamMember username={user.username} userId={user.userId} snapshots={user.snapshots} />
               </div>
             )
           )}
