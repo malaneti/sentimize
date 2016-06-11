@@ -30,6 +30,8 @@ const styles = {
   }
 };
 
+const moodStart = 5 * 60000;
+
 export default class TeamMemberEntryMock extends React.Component {
   constructor (props) {
     super(props);
@@ -104,9 +106,9 @@ export default class TeamMemberEntryMock extends React.Component {
         moodData.labels = moodLabel;
         expressionsData.datasets[0].data = [Math.floor(sadness/dataLength), Math.floor(disgust/dataLength), Math.floor(anger/dataLength),
           Math.floor(surprise/dataLength), Math.floor(fear/dataLength), Math.floor(happiness/dataLength)];
-          this.setState({expressions: expressionsData, mood: moodData});
+        this.setState({expressions: expressionsData, mood: moodData});
 
-          console.log(this.state);
+        console.log(this.state);
       }.bind(this)
     });
   }
@@ -138,20 +140,3 @@ export default class TeamMemberEntryMock extends React.Component {
   }
 };
 
-/*
-        <div className="teams-entry-title">{this.props.entry.title}</div>
-        <div className="teams-entry-description">{this.props.entry.description}</div>
-        <div className="teams-entry-subject">
-          <span className="label">Subject: </span>
-          <span className="value">{this.props.entry.subject}</span>
-        </div>
-        <div className="teams-entry-date">
-          <span className="label">Date: </span>
-          <span className="value">{this.props.entry.date}</span>
-        </div>
-        <div className="teams-entry-duration">
-          <span className="label">Duration: </span>
-          <span className="value">{this.props.entry.duration} seconds</span>
-        </div>
-      </div>
-*/

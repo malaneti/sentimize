@@ -7,7 +7,7 @@ import HomeView from './home-view/HomeView.jsx';
 import RecordView from './record-view/RecordView.jsx';
 import TeamView from './team-view/TeamView.jsx';
 import SessionsView from './sessions-view/SessionsView.jsx';
-import TeamsViewMock from './teams-view/TeamsViewMock.jsx';
+import TeamsViewMock from './team-view/TeamsViewMock.jsx';
 import ReportView from './report-view/ReportView.jsx';
 import SettingsView from './settings-view/SettingsView.jsx';
 
