@@ -176,5 +176,4 @@ export default class TeamMember extends React.Component {
       </div>
     );
   }
-}
-
+};

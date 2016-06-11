@@ -6,6 +6,10 @@ export default class SessionEntry extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    console.log(this.props);
+  }
+
   showSessionReport() {
     browserHistory.push('/reports/' + this.props.sessionId);
   }
@@ -13,11 +17,9 @@ export default class SessionEntry extends React.Component {
   render () {
     return (
       <div className="session-entry-row" onClick={this.showSessionReport.bind(this)}>
-        <div className="session-entry-title">{this.props.session.title}</div>
-        <div className="session-entry-description">{this.props.session.description}</div>
         <div className="session-entry-subject">
-          <span className="label">Subject: </span>
-          <span className="value">{this.props.session.subject}</span>
+          <span className="label">Session: </span>
+          <span className="value">{this.props.sessionId}</span>
         </div>
         <div className="session-entry-date">
           <span className="label">Date: </span>
