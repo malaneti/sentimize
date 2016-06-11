@@ -132,7 +132,6 @@ export default class VideoConfView extends React.Component {
         <div id="remote-media"></div>
         <div id="controls">
           <div id="preview">
-            <p className="instructions">Hello Beautiful</p>
             <div id="local-media"></div>
             <button id="button-preview" onClick={this.openPreview.bind(this)}>Preview My Camera</button>
           </div>

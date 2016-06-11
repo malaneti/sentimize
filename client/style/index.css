@@ -3,6 +3,7 @@
 @import url('./record-view.css');
 @import url('./settings-view.css');
 @import url('./teams-view.css');
+@import url('./video-view.css');
 
 .main-layout {
   /*Same as the height of the footer*/
