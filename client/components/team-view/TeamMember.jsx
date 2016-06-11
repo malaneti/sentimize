@@ -86,6 +86,19 @@ export default class TeamMember extends React.Component {
   _getAvgSnapshot(snapshots) {
     var moodData = Object.assign({}, this.state.mood);
     var expressionsData = Object.assign({}, this.state.expressions);
+    var moodBuckets = {
+      8: 0,
+      9: 0,
+      10: 0,
+      11: 0,
+      12: 0,
+      13: 0,
+      14: 0,
+      15: 0,
+      16: 0,
+      17: 0
+    };
+
     var dimensions = {
       mood: {
         data: [],
@@ -104,12 +117,19 @@ export default class TeamMember extends React.Component {
 
     var expressionsKeys = Object.keys(dimensions.expressions);
     var i = 0;
+    var bucket = 8;
+    var snapshotsPerBucket = Math.floor(snapshots.length/10);
 
     snapshots.forEach(function(snapshot) {
-      console.log(snapshot.mood);
-      //Get mood data
-      moodData.datasets[0].data.push(snapshot.mood);
-      moodData.labels.push(snapshot.created_at);
+      //Get mood data and calc average per time bucket
+      if (i < snapshotsPerBucket) {
+        moodBuckets[bucket] += snapshot.mood;
+        i++;
+      } else if (bucket < 18) {
+        moodBuckets[bucket] = Math.floor(moodBuckets[bucket]/snapshotsPerBucket) || 0;
+        i = 0;
+        bucket++;
+      }
 
       //Get expressions data
       for (let key in snapshot) {
@@ -118,14 +138,19 @@ export default class TeamMember extends React.Component {
         }
       }
     });
-    
+
+    //Compose mood data
+    for (let bucket in moodBuckets) {
+      moodData.datasets[0].data.push(moodBuckets[bucket]);
+      moodData.labels.push(bucket);
+    }
+    //Compose expressions data
     for (let key in dimensions.expressions) {
       expressionsData.labels.push(key[0].toUpperCase() + key.slice(1));
       expressionsData.datasets[0].data.push(Math.floor(dimensions.expressions[key]/snapshots.length)); //Calc avg
     }
 
     this.setState({ expressions: expressionsData, mood: moodData });
-    console.log(this.state);
   };
 
   showUserSessions () {
