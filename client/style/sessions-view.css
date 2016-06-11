@@ -15,7 +15,7 @@
   border-radius: 5px;
   margin: 20px auto 40px;
   padding: 5px;
-  height: 50px;
+  height: 100px;
   width: 300px;
   background-color: white;
   color: rgb(80, 80, 100);
@@ -29,14 +29,11 @@
 }
 
 .session-entry-title {
-  letter-spacing: 2px
-  padding: 30px 0 10px;
   font-size: 22px;
   font-weight: 500;
 }
 
 .session-entry-description {
-  margin: 15px 0 20px;
   font-size: 16px;
   color: rgb(140,140,140);
   height: 60px;
@@ -49,13 +46,8 @@
   font-size: 12px;
 }
 
-.session-entry-block .value {
-  font-weight: 300;
-  font-size: 18px;
-}
-
 .session-entry-subject {
-  margin: 40px 0 13px;
+  margin: auto;
 }
 
 .session-entry-date {
