@@ -24,7 +24,6 @@ export default class TeamView extends React.Component {
       });  
       this._getTeamUsers(function(userIds) {
         this.setState({ userIds: userIds });
-        console.log(this.state);
         this._getSnapshots(function(snapshots) {
           this.setState({ userSnapshots: this._snapshotsByUser(snapshots) });
         }.bind(this));
@@ -77,7 +76,6 @@ export default class TeamView extends React.Component {
   }
 
   _snapshotsByUser(snapshots) {
-    console.log("SNAPSHOTS", snapshots);
     //Build an object with user snapshots in an array by user
     let users = snapshots.reduce(function(usersSoFar, snapshot) {
       if (!usersSoFar[snapshot.userId]) {

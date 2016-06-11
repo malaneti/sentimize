@@ -55,7 +55,6 @@ module.exports = {
   getSnapshots: function(req, res) {
     var queryField;
     var queryValues;
-    console.log(req.query);
 
     //All snapshots for all sessions for a specific user (TeamView component)
     if (req.query.userIds) {
@@ -73,15 +72,11 @@ module.exports = {
       queryValues = req.param(queryField);
     }
 
-    console.log(req.params);
-    console.log("QUERY STUFF", queryField, queryValues);
-
     //Use Knex QueryBuilder.whereIn() function inside Bookshelf.query() to check multiple values in the WHERE clause
     Snapshot.query(function(qb) {
         qb.whereIn(queryField, queryValues);
       }).fetchAll()
       .then(function(snapshots) {
-        console.log("SNAPSHOTS", snapshots);
         res.status(200).send(snapshots);
       })
       .catch(function(err) {
