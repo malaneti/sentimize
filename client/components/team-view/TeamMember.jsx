@@ -157,7 +157,6 @@ export default class TeamMember extends React.Component {
     browserHistory.push('/session/' + this.props.userId);
   }
 
-
   render () {
     return (
       <div className="teams-entry-block pure-g" onClick={this.showUserSessions.bind(this)}>
